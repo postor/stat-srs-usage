@@ -1,0 +1,17 @@
+services:
+  srs:
+    image: registry.cn-hangzhou.aliyuncs.com/ossrs/srs:4
+    ports:
+      - "1935:1935"
+      - "1985:1985"
+      - "8080:8080"
+    environment:
+      - HOOK_ONCLOSE=http://logger:3000/client-close
+      - HOOK_ONUNPUBLISH=
+    volumes:
+      - ./srs.conf:/usr/local/srs/srs.conf
+      - ./logs:/logs
+    command: ./objs/srs -c srs.conf
+   
+  logger:
+    build: ./logger
